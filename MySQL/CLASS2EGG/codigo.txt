@@ -1,0 +1,201 @@
+USE mi_bd;
+-- SET SQL_SAFE_UPDATES = 0;
+
+-- insert into productos (nombre, precio) values ('Teléfono móvil', 450.00);
+-- Inserta un nuevo producto en la tabla "productos" con el nombre "Teléfono móvil" y un precio de 450.00.
+
+--  insert into clientes (nombre, direccion) values ('María García', 'Constitución 456, Luján');
+--  un nuevo cliente en la tabla "clientes" con el nombre "María García" y la dirección "Constitución 456, Luján".
+
+-- alter table empleados modify correo_electronico VARCHAR(100) GENERATED ALWAYS AS (CONCAT(nombre, '.', apellido, '@mail.com')) STORED;
+-- Modifica la columna correo_electronico de la tabla empleados para que se genere automáticamente concatenado el nombre
+-- , apellido y el string “@mail.com”.
+
+-- 💡Recuerda usar la cláusula “GENERATED ALWAYS AS (expresion) STORED”.Para concatenar textos puedes usar la función 
+-- “concat(texto1, texto2, texto3, …)”📍En el futuro, exploraremos la posibilidad de desarrollar una función que permita 
+-- eliminar los acentos y normalizar las direcciones de correo electrónico.
+
+
+-- insert into empleados (nombre, apellido, edad, salario, departamento_id) values ('Luis', 'Fernández', 28, 2800.00, 1);
+-- Inserta un nuevo empleado en la tabla "empleados" con el nombre "Luis” y apellido “Fernández", edad 28, salario 2800.00 
+-- y que pertenezca al departamento “ventas”
+
+-- update productos SET precio = 1350.00 WHERE id = 1;
+-- Actualiza el precio del producto "Laptop" a 1350.00 en la tabla "productos".
+
+-- update clientes SET direccion = 'Alberti 1789, Mar del Plata' WHERE id = 1;
+-- Modifica la dirección del cliente "Juan Pérez" a "Alberti 1789, Mar del Plata" en la tabla "clientes".
+
+
+-- update empleados  set salario = salario * 1.05 ;
+-- Incrementa el salario de todos los empleados en un 5% en la tabla "empleados".
+
+-- insert into productos (nombre, precio) values ('Tablet', 350.00);
+-- Inserta un nuevo producto en la tabla "productos" con el nombre "Tablet" y un precio de 350.00.
+
+-- insert into clientes (nombre, direccion) values ('Ana López', 'Beltrán 1452, Godoy Cruz');
+-- Inserta un nuevo cliente en la tabla "clientes" con el nombre "Ana López" y la dirección "Beltrán 1452, Godoy Cruz".
+
+-- insert into empleados (nombre, apellido, edad, salario, departamento_id) values ('Marta', 'Ramírez', 32, 3100.00, (SELECT id FROM departamentos WHERE nombre = 'Ventas'));
+-- Inserta un nuevo empleado en la tabla "empleados" con el nombre "Marta", apellido "Ramírez", edad 32, salario 3100.00 y 
+-- que pertenezca al departamento “ventas”.
+
+-- update productos set precio = 480.00 where nombre = 'Teléfono móvil';
+-- Actualiza el precio del producto "Teléfono móvil" a 480.00 en la tabla "productos".
+
+-- update clientes set direccion = 'Avenida 789, Ciudad del Este' where nombre = 'María García';
+-- Modifica la dirección del cliente "María García" a "Avenida 789, Ciudad del Este" en la tabla "clientes".
+
+-- update empleados set salario = salario * 1.07 where departamento_id = (SELECT id FROM departamentos WHERE nombre = 'Ventas');
+-- Incrementa el salario de todos los empleados en el departamento de "Ventas" en un 7% en la tabla "empleados".
+
+-- insert into productos (nombre, precio) values ('Impresora', 280.00);
+-- un nuevo producto en la tabla "productos" con el nombre "Impresora" y un precio de 280.00.
+
+-- insert into clientes (nombre, direccion) values ('Carlos Sánchez', 'Saavedra 206, Las Heras');
+-- Inserta un nuevo cliente en la tabla "clientes" con el nombre "Carlos Sánchez" y la dirección "Saavedra 206, Las Heras".
+
+
+-- insert into empleados (nombre, apellido, edad, salario, departamento_id) values ('Lorena', 'Guzmán', 26 ,2600.00, (SELECT id FROM departamentos WHERE nombre = 'Ventas'));
+-- Inserta un nuevo empleado en la tabla "empleados" con el nombre "Lorena", apellido "Guzmán", edad 26, salario 2600.00 y que 
+-- pertenezca al departamento “ventas”.
+
+
+
+-- Ejercicios Complementarios
+
+-- insert into ventas (producto_id, cliente_id, cantidad, precio_unitario, empleado_id) values
+-- ((SELECT id FROM productos WHERE nombre = 'Laptop'),
+-- (SELECT id FROM clientes WHERE nombre = 'Juan Pérez'),
+-- 2 ,
+-- (SELECT precio FROM productos WHERE nombre = 'Laptop'),
+-- (SELECT id FROM empleados WHERE nombre = 'Ana' and apellido = 'Rodríguez'));
+-- Inserta una venta en la tabla "ventas" donde el cliente "Juan Pérez" compra una "Laptop" con una cantidad de 2
+-- y el vendedor tiene el nombre "Ana" y apellido "Rodríguez".
+
+
+-- insert into ventas (producto_id, cliente_id, cantidad, precio_unitario, empleado_id) values
+-- ((SELECT id FROM productos WHERE nombre = 'Teléfono móvil'),
+-- (SELECT id FROM clientes WHERE nombre = 'María García'),
+-- 3 ,
+-- (SELECT precio FROM productos WHERE nombre = 'Teléfono móvil'),
+-- (SELECT id FROM empleados WHERE nombre = 'Carlos' and apellido = 'López'));
+-- Inserta una venta en la tabla "ventas" donde el cliente "María García" compra un "Teléfono móvil" con una cantidad 
+-- de 3 y el vendedor tiene el nombre "Carlos" y apellido "López".
+
+-- insert into ventas (producto_id, cliente_id, cantidad, precio_unitario, empleado_id) values
+-- ((SELECT id FROM productos WHERE nombre = 'Impresora'),
+-- (SELECT id FROM clientes WHERE nombre = 'Carlos Sánchez'),
+-- 1 ,
+-- (SELECT precio FROM productos WHERE nombre = 'Impresora'),
+-- (SELECT id FROM empleados WHERE nombre = 'Marta' and apellido = 'Ramírez'));
+-- Crea una venta en la tabla "ventas" donde el cliente "Carlos Sánchez" compra una "Impresora" con una cantidad de
+--  1 y el vendedor tiene el nombre "Marta" y apellido "Ramírez".
+
+-- insert into ventas (producto_id, cliente_id, cantidad, precio_unitario, empleado_id) values
+-- ((SELECT id FROM productos WHERE nombre = 'Laptop'),
+-- (SELECT id FROM clientes WHERE nombre = 'Ana López'),
+-- 1 ,
+-- (SELECT precio FROM productos WHERE nombre = 'Laptop'),
+-- (SELECT id FROM empleados WHERE nombre = 'Carlos' and apellido = 'López'));
+-- Inserta una venta en la tabla "ventas" donde el cliente "Ana López" compra una "Laptop" con una cantidad de 1 
+-- y el vendedor tiene el nombre "Carlos" y apellido "López".
+
+-- insert into ventas (producto_id, cliente_id, cantidad, precio_unitario, empleado_id) values
+-- ((SELECT id FROM productos WHERE nombre = 'Tablet'),
+-- (SELECT id FROM clientes WHERE nombre = 'Juan Pérez'),
+-- 2 ,
+-- (SELECT precio FROM productos WHERE nombre = 'Tablet'),
+-- (SELECT id FROM empleados WHERE nombre = 'Luis' and apellido = 'Fernández'));
+-- Crea una venta en la tabla "ventas" donde el cliente "Juan Pérez" compra una "Tablet" con una cantidad de 2 y 
+-- el vendedor tiene el nombre "Luis" y apellido "Fernández".
+
+-- insert into ventas (producto_id, cliente_id, cantidad, precio_unitario, empleado_id) values
+-- ((SELECT id FROM productos WHERE nombre = 'Teléfono móvil'),
+-- (SELECT id FROM clientes WHERE nombre = 'María García'),
+-- 1 ,
+-- (SELECT precio FROM productos WHERE nombre = 'Teléfono móvil'),
+-- (SELECT id FROM empleados WHERE nombre = 'Marta' and apellido = 'Ramírez'));
+ -- Inserta una venta en la tabla "ventas" donde el cliente "María García" compra un "Teléfono móvil" con una cantidad 
+ -- de 1 y el vendedor tiene el nombre "Marta" y apellido "Ramírez".
+
+-- insert into ventas (producto_id, cliente_id, cantidad, precio_unitario, empleado_id) values
+-- ((SELECT id FROM productos WHERE nombre = 'Impresora'),
+-- (SELECT id FROM clientes WHERE nombre = 'Carlos Sánchez'),
+-- 2 ,
+-- (SELECT precio FROM productos WHERE nombre = 'Impresora'),
+-- (SELECT id FROM empleados WHERE nombre = 'Lorena' and apellido = 'Guzmán'));
+-- Crea una venta en la tabla "ventas" donde el cliente "Carlos Sánchez" compra una "Impresora" con una cantidad de 
+-- 2 y el vendedor tiene el nombre "Lorena" y apellido "Guzmán".
+
+
+ -- SET SQL_SAFE_UPDATES = 1;
+
+--                                        Ejercicios:   Cláusula DISTINCT
+-- select distinct nombre from empleados; -- :D
+-- Lista los nombres de los empleados sin duplicados
+
+-- select distinct correo_electronico from empleados; -- :D
+-- Obtén una lista de correos electrónicos únicos de todos los empleados.
+
+-- select distinct edad from empleados; -- :D
+-- Encuentra la lista de edades distintas entre los empleados.
+
+
+
+
+
+--                                              Ejercicios: Operadores relacionales
+ 
+-- select nombre from empleados where salario > 3200;
+-- Muestra los nombres de los empleados que tienen un salario superior a $3200.
+
+-- select * from empleados where edad = 28;
+-- Obtén una lista de empleados que tienen 28 años de edad.
+
+-- select * from empleados where salario < 2700;
+-- Lista a los empleados cuyos salarios sean menores a $2700.
+
+-- select * from ventas where cantidad > 2;
+-- Encuentra todas las ventas donde la cantidad de productos vendidos sea mayor que 2.
+
+-- select * from ventas where precio_unitario = 480.00;
+-- Muestra las ventas donde el precio unitario sea igual a $480.00.
+
+-- select * from ventas where monto_total < 1000.00;
+-- Obtén una lista de ventas donde el monto total sea menor que $1000.00.
+
+-- select * from ventas where empleado_id = 1;
+-- Encuentra las ventas realizadas por el empleado con el ID 1.
+
+
+
+--                                                 Operadores lógicos
+
+-- select nombre from empleados where departamento_id = 1 and salario > 3000.00;
+-- Muestra los nombres de los empleados que trabajan en el Departamento 1 y tienen un salario superior a $3000.
+
+-- select * from empleados where edad = 32 or departamento_id = 3;
+-- Lista los empleados que tienen 32 años de edad o trabajan en el Departamento 3.
+
+-- select * from ventas where producto_id = 1 and cantidad >= 2;
+-- Lista las ventas donde el producto sea el ID 1 y la cantidad sea mayor o igual a 2.
+
+-- select * from ventas where cliente_id = 1 or empleado_id = 2;
+-- Muestra las ventas donde el cliente sea el ID 1 o el empleado sea el ID 2.
+
+-- select * from ventas where cliente_id = 2 and cantidad > 2;
+-- Obtén una lista de ventas donde el cliente sea el ID 2 y la cantidad sea mayor que 2.
+
+-- select * from ventas where empleado_id = 1 and monto_total > 2000.00;
+-- Encuentra las ventas realizadas por el empleado con el ID 1 y donde el monto total sea mayor que $2000.00.
+
+--                                                            Cláusula BETWEEN
+-- select nombre, edad from empleados where edad BETWEEN 29 and 33;
+-- Encuentra a los empleados cuyas edades están entre 29 y 33 años. Muestra el nombre y la edad de los registros que cumplan esa condición. 
+
+-- select * from ventas where cantidad BETWEEN 2 and 3;
+-- Encuentra las ventas donde la cantidad de productos vendidos esté entre 2 y 3.
+
+-- select * from ventas where precio_unitario BETWEEN 300.00 and 500.00;
+-- Muestra las ventas donde el precio unitario esté entre $300.00 y $500.00.
