@@ -1,0 +1,203 @@
+USE mi_bd;
+/*
+                       -- Ejercicios cláusula IN
+select * from empleados where id in (1,3,5);
+-- Encuentra los empleados cuyos IDs son 1, 3 o 5.
+
+select * from empleados where id in (1,3,5);
+-- Busca los productos con IDs 2, 4 o 6 en la tabla de productos.
+
+select * from ventas where cliente_id in (1,3,5);
+-- Encuentra las ventas que tienen los clientes con IDs 1, 3 o 5.
+*/
+/*
+                      -- Ejercicios cláusula LIKE
+ SELECT * FROM empleados WHERE nombre LIKE 'L%';
+--   Encuentra los empleados cuyos nombres comienzan con "L".
+
+ SELECT * FROM productos WHERE nombre LIKE 'Telefono%';
+--  Busca los productos cuyos nombres contengan la palabra "Teléfono".
+
+ SELECT * FROM clientes WHERE direccion LIKE 'Calle%';
+-- Encuentra los clientes cuyas direcciones contienen la palabra "Calle".
+*/
+/*
+--                          Ejercicios cláusula ORDER BY:
+
+SELECT * FROM empleados ORDER BY salario ASC ;
+-- Ordena los empleados por salario de manera ascendente.
+ 
+  
+ SELECT * FROM productos ORDER BY nombre DESC ;
+ -- Ordena los productos por nombre de manera descendente.
+ 
+ 
+  SELECT * FROM ventas ORDER BY cantidad ASC ;
+  SELECT * FROM ventas ORDER BY precio_unitario DESC ;
+ -- Ordena las ventas por cantidad de manera ascendente y luego por precio_unitario de manera descendente.
+ */
+ /*
+ --                                     Ejercicios LIMIT
+ 
+ -- SELECT * FROM productos ORDER BY precio DESC limit 5;
+ -- Muestra los 5 productos más caros de la tabla "productos".
+
+ -- SELECT * FROM empleados ORDER BY apellido ASC limit 10;
+ -- Muestra los 10 primeros empleados en orden alfabético por apellido.
+
+--  SELECT * FROM ventas ORDER BY monto_total DESC limit 3;
+ -- Muestra las 3 ventas con el monto total más alto.
+*/
+/*
+--                                                                         Ejercicios AS
+
+-- select concat ('',salario, '        ', salario*1.10) as 'Aumento del 10%' from empleados;
+-- Crea una consulta que muestre el salario de los empleados junto con el salario aumentado en un 10% nombrando a la columna como “Aumento del 10%”.
+
+-- SELECT concat ('cliente: ', cliente_id, '    gasto: ',SUM(monto_total)) as 'Monto total gastado' FROM ventas GROUP BY cliente_id;
+-- Crea una consulta que calcule el monto total de las compras realizadas por cliente y que la columna se llame “Monto total gastado”.
+
+-- select concat (nombre,' ',apellido) as 'Nombre y apellido' from empleados;
+-- Muestra los nombres completos de los empleados concatenando los campos "nombre" y "apellido" y que la columna se llame “Nombre y apellido”.
+*/
+
+--                                                                Ejercicios CASE
+
+/*
+SELECT nombre, concat('    ',   
+CASE
+WHEN precio >= 500 THEN 'Caro'
+WHEN precio >= 200 THEN 'Medio'
+ELSE 'Barato'
+END
+) AS 'Producto precio'
+FROM productos;
+-- Crea una consulta que muestre el nombre de los productos y los categorice como "Caro" 
+-- si el precio es mayor o igual a $500, "Medio" si es mayor o igual a $200 y menor que $500, y "Barato" en otros casos.
+*/
+/*
+SELECT nombre, concat('    ',   
+CASE
+WHEN edad < 30 tHEN 'Joven'
+WHEN edad < 40 THEN 'Adulto'
+ELSE 'Mayor'
+END
+) AS 'Producto precio' 
+FROM empleados order by edad ASC;
+-- Crea una consulta que muestre el nombre de los empleados y los categorice como "Joven"
+-- si tienen menos de 30 años, "Adulto" si tienen entre 30 y 40 años, y "Mayor" si tienen más de 40 años.
+*/
+/*
+SELECT id, concat('    ',   
+CASE
+WHEN cantidad < 3 tHEN 'Poca cantidad'
+WHEN cantidad < 6 THEN 'Cantidad moderada'
+ELSE 'Mucha cantidad'
+END
+) AS 'Producto precio' 
+FROM ventas order by cantidad ASC;
+-- Crea una consulta que muestre el ID de la venta y los categorice como "Poca cantidad"
+-- si la cantidad es menor que 3, "Cantidad moderada" si es igual o mayor que 3 y menor que 6, y "Mucha cantidad" en otros casos.
+*/
+/*
+SELECT nombre, concat('    ',   
+CASE
+WHEN nombre Like 'A%' tHEN 'Comienza con A'
+WHEN nombre Like 'M%' THEN 'Comienza con M'
+ELSE 'Otros'
+END
+) AS 'Producto precio' 
+FROM clientes order by nombre ASC;
+-- Crea una consulta que muestre el nombre de los clientes y los categorice como "Comienza con A"
+-- si su nombre comienza con la letra 'A', "Comienza con M" si comienza con 'M' y "Otros" en otros casos.
+*/
+/*
+SELECT nombre, concat('    ',   
+CASE
+WHEN salario >= 3500 THEN 'Salario alto'
+WHEN salario >= 3000 THEN 'Salario medio'
+ELSE 'Salario bajo'
+END
+) AS 'Producto precio' 
+FROM empleados order by salario DESC;
+-- Crea una consulta que muestre el nombre de los empleados y los categorice como "Salario alto" 
+-- si el salario es mayor o igual a $3500, "Salario medio" si es mayor o igual a $3000 y menor que $3500, y "Salario bajo" en otros casos.
+*/
+/*
+--   Ejercicios Función MAX() 
+SELECT MAX(salario) FROM empleados;
+-- Encuentra el salario máximo de todos los empleados.
+
+SELECT MAX(cantidad) FROM ventas;
+-- Encuentra la cantidad máxima de productos vendidos en una sola venta.
+
+SELECT MAX(edad) FROM empleados;
+-- Encuentra la edad máxima de los empleados.
+*/
+/*
+-- Ejercicios Función MIN()
+SELECT MIN(salario) FROM empleados;
+-- Encuentra el salario mínimo de todos los empleados.
+
+SELECT MIN(cantidad) FROM ventas;
+-- Encuentra la cantidad mínima de productos vendidos en una sola venta.
+
+SELECT MIN(edad) FROM empleados;
+-- Encuentra la edad mínima de los empleados.
+*/
+/*
+-- ejercicios de la Función COUNT()
+SELECT COUNT(*) FROM empleados;
+-- Cuenta cuántos empleados hay en total.
+
+SELECT COUNT(*) FROM ventas;
+-- Cuenta cuántas ventas se han realizado.
+
+SELECT COUNT(*) FROM productos where precio > 500;
+-- Cuenta cuántos productos tienen un precio superior a $500.
+*/
+
+/*
+-- Ejercicios de la Función SUM()
+SELECT SUM(salario) FROM empleados;
+-- Calcula la suma total de salarios de todos los empleados.
+
+SELECT SUM(monto_total) FROM empleados;
+-- Calcula la suma total de montos vendidos en todas las ventas.
+
+SELECT SUM(salario) FROM empleados where id % 2 = 0;
+-- Calcula la suma de precios de productos con ID par.
+*/
+/*
+-- Ejercicios Función AVG()
+SELECT AVG(salario) AS salario_promedio FROM empleados;
+-- Calcula el salario promedio de todos los empleados.
+
+SELECT AVG(precio_unitario) AS precio_promedio FROM productos;
+-- Calcula el precio unitario promedio de todos los productos.
+
+SELECT AVG(edad) AS edad_promedio FROM empleados;
+-- Calcula la edad promedio de los empleados.
+*/
+/*
+-- Ejercicios GROUP BY()
+SELECT empleado_id, COUNT(*) AS total_ventas FROM ventas GROUP BY empleado_id;
+-- Agrupa las ventas por empleado y muestra la cantidad total de ventas realizadas por cada empleado.
+
+SELECT precio, COUNT(*) AS cantidad_productos FROM productos GROUP BY precio;
+-- Agrupa los productos por precio y muestra la cantidad de productos con el mismo precio.
+
+SELECT departamento_id, COUNT(*) AS cantidad_empleados FROM empleados GROUP BY departamento_id;
+-- Agrupa los empleados por departamento y muestra la cantidad de empleados en cada departamento.
+
+-- Ejercicios HAVING 
+SELECT departamento_id, AVG(salario) AS salario_promedio FROM empleados GROUP BY departamento_id HAVING AVG(salario) > 3000;
+-- Encuentra los departamentos con un salario promedio de sus empleados superior a $3,000.
+
+SELECT producto_id, COUNT(*) AS cantidad_ventas FROM ventas GROUP BY producto_id HAVING COUNT(*) >= 5;
+-- Encuentra los productos que se han vendido al menos 5 veces.
+
+SELECT departamento_id, MAX(salario) AS salario_maximo FROM empleados WHERE nombre LIKE '%o%' OR apellido LIKE '%o%' GROUP BY departamento_id;
+-- Selecciona los empleados que tengan una “o” en su nombre o apellido y agrúpalos por departamento y muestra los que tengan el salario máximo.
+*/
+
