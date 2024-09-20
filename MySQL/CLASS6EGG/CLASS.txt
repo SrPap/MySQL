@@ -1,0 +1,388 @@
+USE mi_bd;
+/*
+--                                         Ejercicios Prácticos con Tablas Temporales 
+--  Utiliza TABLE para consultar la tabla productos de manera simple, ordenando los productos de forma descendente por precio y solo 10 filas.
+TABLE productos
+ORDER BY precio DESC
+LIMIT 10;
+
+
+-- Crea una tabla temporal de los empleados donde unifiques su nombre y apellido en una sola columna.
+CREATE TEMPORARY TABLE empleados2 (
+id int auto_increment Key,
+nombre varchar(50),
+edad int ,
+salario decimal(10,2) ,
+correo_electronico varchar(100) ,
+departamento_id int ,
+fecha_contratacion timestamp
+);
+
+-- Crea una tabla temporal de la tabla clientes donde solo tengas la columna nombre.
+CREATE TEMPORARY TABLE clientes2 (
+nombre varchar(50)
+);
+
+
+-- Realiza la unión entre las tablas temporales de empleados y clientes usando TABLE.
+Select *
+From empleados2, clientes2;
+
+
+/*
+Crea una tabla temporal escuela primaria que tenga las siguientes columnas: id(int), nombre(varchar), apellido(varchar), edad(int) y grado(int).
+ Y que tenga los siguientes valores:
+ID: 1, Nombre: Alejandro, Apellido: González, Edad: 11, Grado: 5
+ID: 2, Nombre: Isabella, Apellido: López, Edad: 10, Grado: 4
+ID: 3, Nombre: Lucas, Apellido: Martínez, Edad: 11, Grado: 5 
+ID: 4, Nombre: Sofía, Apellido: Rodríguez, Edad: 10, Grado: 4 
+ID: 5, Nombre: Mateo, Apellido: Pérez, Edad: 12, Grado: 6 
+ID: 6, Nombre: Valentina, Apellido: Fernández, Edad: 12, Grado: 6
+ID: 7, Nombre: Diego, Apellido: Torres, Edad: 10, Grado: 4
+ID: 8, Nombre: Martina, Apellido: Gómez, Edad: 11, Grado: 5
+ID: 9, Nombre: Joaquín, Apellido: Hernández, Edad: 10, Grado: 4
+ID: 10, Nombre: Valeria, Apellido: Díaz, Edad: 11, Grado: 5
+
+CREATE TEMPORARY TABLE escuela_primaria (
+ id int AUTO_INCREMENT key,
+ nombre varchar (50),
+ apellido varchar (50),
+ edad int,
+ grado int 
+);
+INSERT INTO escuela_primaria (id, nombre, apellido, edad, grado) VALUES
+(1, 'Alejandro', 'González', 11, 5),
+(2, 'Isabella', 'López', 10, 4),
+(3, 'Lucas', 'Martínez', 11, 5),
+(4, 'Sofía', 'Rodríguez', 10, 4),
+(5, 'Mateo', 'Pérez', 12, 6),
+(6, 'Valentina', 'Fernández', 12, 6),
+(7, 'Diego', 'Torres', 10, 4),
+(8, 'Martina', 'Gómez', 11, 5),
+(9, 'Joaquín', 'Hernández', 10, 4),
+(10, 'Valeria', 'Díaz', 11, 5);
+select * from escuela_primaria;
+*/
+/*
+-- Ejercicios Complementarios con Tablas Temporales 
+
+CREATE TEMPORARY TABLE empleados_temporal 
+SELECT CONCAT(nombre, ' ', apellido) `nombre_completo`
+FROM empleados;
+CREATE TEMPORARY TABLE clientes_temporal 
+SELECT nombre, direccion
+FROM clientes;
+-- Agrega un cliente nuevo con el nombre “Ana Rodríguez” y con dirección en “San Martín 2515, Mar del Plata”. 
+-- Luego realiza la intersección entre la tabla temporal de empleados y clientes.
+INSERT INTO clientes_temporal (nombre, direccion) VALUES ('Ana Rodríguez', 'San Martín 2515, Mar del Plata');
+
+-- Realiza la excepción entre la tabla temporal de clientes y la de empleados.
+SELECT nombre FROM clientes_temporal
+EXCEPT
+SELECT nombre_completo FROM empleados_temporal
+;
+*/
+
+
+/*
+Crea una tabla temporal escuela secundaria que tenga las siguientes columnas: id(int), nombre(varchar), apellido(varchar), edad(int) y grado(int). 
+Y que tenga los siguientes valores:
+ID: 1, Nombre: Eduardo, Apellido: Sánchez, Edad: 16, Grado: 10
+ID: 2, Nombre: Camila, Apellido: Martín, Edad: 17, Grado: 11
+ID: 3, Nombre: Manuel, Apellido: Gutiérrez, Edad: 15, Grado: 9
+ID: 4, Nombre: Laura, Apellido: García, Edad: 16, Grado: 10
+ID: 11, Nombre: Pablo, Apellido: Ortega, Edad: 17, Grado: 11
+ID: 12, Nombre: Carmen, Apellido: Ramírez, Edad: 15, Grado: 9
+ID: 13, Nombre: Carlos, Apellido: Molina, Edad: 16, Grado: 10
+ID: 14, Nombre: Ana, Apellido: Ruiz, Edad: 17, Grado: 11
+ID: 15, Nombre: Luis, Apellido: Fernández, Edad: 15, Grado: 9
+ID: 16, Nombre: María, Apellido: López, Edad: 16, Grado: 10
+*/
+/*
+CREATE TEMPORARY TABLE escuela_secundaria (
+ id int AUTO_INCREMENT key,
+ nombre varchar (50),
+ apellido varchar (50),
+ edad int,
+ grado int 
+);
+INSERT INTO escuela_secundaria (id, nombre, apellido, edad, grado) VALUES
+(1, 'Eduardo', 'Sánchez', 16, 10),
+(2, 'Camila', 'Martín', 17, 11),
+(3, 'Manuel', 'Gutiérrez', 15, 9),
+(4, 'Laura', 'García', 16, 10),
+(11, 'Pablo', 'Ortega', 17, 11),
+(12, 'Carmen', 'Ramírez', 15, 9),
+(13, 'Carlos', 'Molina', 16, 10),
+(14, 'Ana', 'Ruiz', 17, 11),
+(15, 'Luis', 'Fernández', 15, 9),
+(16, 'María', 'López', 16, 10);
+select * from escuela_secundaria;
+*/
+/*
+-- Realiza la intersección de la escuela primaria y escuela secundaria con el nombre y apellido de los alumnos 
+-- para saber quienes fueron a ambas escuelas.
+SELECT nombre, apellido FROM escuela_primaria 
+INTERSECT 
+SELECT nombre, apellido FROM escuela_secundaria;
+-- select * FROM escuela_primaria;
+-- select * FROM escuela_secundaria;
+*/
+
+/*
+-- Realiza la excepción de la escuela primaria con la secundaria para saber quienes no siguieron cursando en dicha escuela secundaria.
+SELECT nombre, apellido FROM escuela_primaria 
+EXCEPT 
+SELECT nombre, apellido FROM escuela_secundaria;
+*/
+
+/*
+-- Realiza la excepción de la escuela secundaria con la primaria para saber quienes no siguieron cursando en dicha escuela secundaria.
+SELECT nombre, apellido FROM escuela_secundaria 
+EXCEPT 
+SELECT nombre, apellido FROM escuela_primaria;
+*/
+/*
+-- Realiza la unión de la escuela primaria y secundaria con la columna grado para saber cuáles son los grados que abarcan ambas escuelas,
+--  y ordénalos de forma descendente.
+
+SELECT grado FROM escuela_primaria 
+UNION 
+SELECT grado FROM escuela_secundaria
+ORDER BY grado DESC;
+*/
+/*
+-- Ejercicios  Subconsultas All y Any
+-- Encuentra los nombres de los clientes que han realizado compras de productos con un precio 
+-- superior a la media de precios de todos los productos.
+SELECT DISTINCT clientes.nombre `clientes`
+FROM clientes
+JOIN ventas ON  clientes.id = ventas.cliente_id
+WHERE ventas.precio_unitario > ANY (SELECT AVG(precio_unitario) from ventas);
+
+
+-- Encuentra los empleados cuyo salario sea mayor que al menos uno de los salarios de los 
+-- empleados del departamento de "Ventas".
+SELECT * 
+FROM empleados
+JOIN departamentos ON  departamentos.id = empleados.departamento_id
+WHERE departamentos.nombre = 'Ventas' AND empleados.salario > ANY (SELECT min(salario) from empleados);
+
+
+-- Encuentra los productos cuyos precios sean mayores que todos los precios de los productos 
+-- con la palabra "Móvil" en su nombre.
+SELECT * 
+FROM productos
+WHERE productos.precio > 
+(
+SELECT ALL(precio) 
+FROM productos
+WHERE nombre LIKE '%Móvil%'
+);
+*/
+
+/*
+-- Muestra la información de los clientes que realizaron la compra con el monto total más alto, 
+-- incluyendo su nombre, dirección y el monto total de compra.
+SELECT clientes.nombre, clientes.direccion , ventas.monto_total
+FROM clientes
+JOIN ventas ON clientes.id = ventas.cliente_id
+WHERE ventas.monto_total > 
+(
+SELECT MAX(monto_total -1) FROM ventas
+);
+*/
+/*
+-- Para cada departamento, encuentra el empleado con el salario más alto. Muestra el nombre del 
+-- departamento junto con el nombre del empleado y su salario.
+SELECT departamentos.nombre 'departamento', empleados.nombre , empleados.salario `salario`
+FROM departamentos
+JOIN empleados ON departamentos.id = empleados.departamento_id
+WHERE empleados.salario = (
+SELECT MAX(salario) FROM empleados
+WHERE empleados.departamento_id = departamentos.id);
+*/
+
+-- Ejercicios  Subconsultas All y Any
+
+/*
+-- Encuentra los empleados que ganan más que el salario promedio de los empleados del departamento de "Contabilidad".
+SELECT empleados.nombre, empleados.apellido, empleados.salario
+FROM empleados
+WHERE empleados.salario > (
+    SELECT AVG(salario)
+    FROM empleados
+    WHERE departamento_id = (
+        SELECT id FROM departamentos WHERE nombre = 'Contabilidad'
+    )
+);
+
+-- Encuentra los productos que tienen un precio superior al precio de al menos uno de los productos vendidos al cliente 
+-- con nombre "Juan Pérez".
+SELECT productos.nombre, productos.precio
+FROM productos
+WHERE productos.precio > ANY (
+    SELECT MIN(ventas.precio_unitario)
+    FROM ventas
+    JOIN clientes ON ventas.cliente_id = clientes.id
+    WHERE clientes.nombre = 'Juan Pérez'
+);
+
+-- Encuentra los departamentos en los que al menos hay un empleado menor de 30 años.
+SELECT DISTINCT departamentos.nombre `departamentos`
+FROM departamentos
+JOIN empleados ON departamentos.id = empleados.departamento_id
+WHERE empleados.edad < 30;
+
+-- Muestra la información del empleado más joven, que esté entre los 3 empleados con más cantidad de productos vendidos, 
+-- incluyendo su nombre, apellido y edad.
+SELECT empleados.nombre, empleados.apellido, empleados.edad
+FROM empleados
+JOIN (
+    SELECT empleado_id
+    FROM ventas
+    GROUP BY empleado_id
+    ORDER BY COUNT(producto_id) DESC
+    LIMIT 3
+) AS top_empleados ON empleados.id = top_empleados.empleado_id
+ORDER BY empleados.edad ASC
+LIMIT 1;
+
+
+-- Para cada cliente, encuentra el empleado que realizó la venta con el monto total más alto. 
+-- Muestra el nombre del cliente junto con el nombre del empleado y el monto total.
+SELECT clientes.nombre AS `cliente`, 
+       CONCAT(empleados.nombre, ' ', empleados.apellido) AS `empleado`, 
+       ventas.monto_total
+FROM ventas
+JOIN clientes ON ventas.cliente_id = clientes.id
+JOIN empleados ON ventas.empleado_id = empleados.id
+JOIN (
+    SELECT cliente_id, MAX(monto_total) AS max_monto
+    FROM ventas
+    GROUP BY cliente_id
+) AS max_ventas 
+ON ventas.cliente_id = max_ventas.cliente_id 
+AND ventas.monto_total = max_ventas.max_monto;
+*/
+
+/*
+-- 1. Encuentra los clientes que no han realizado ninguna compra. Muestra el nombre y la dirección de estos clientes.
+SELECT clientes.nombre, clientes.direccion
+FROM clientes
+LEFT JOIN ventas ON clientes.id = ventas.cliente_id
+WHERE ventas.id IS NULL;
+*/
+
+/*
+-- 2. Muestra el nombre de los productos que se han vendido más veces que cualquier producto con un precio superior a 500.
+SELECT productos.nombre
+FROM productos
+JOIN ventas ON productos.id = ventas.producto_id
+GROUP BY productos.id
+HAVING COUNT(ventas.id) > ANY (
+    SELECT COUNT(ventas2.id)
+    FROM productos AS p2
+    JOIN ventas AS ventas2 ON p2.id = ventas2.producto_id
+    WHERE p2.precio > 500
+    GROUP BY p2.id
+);
+*/
+
+/*
+-- 3. Encuentra los empleados cuya edad sea menor que la edad de al menos un empleado del departamento de "Recursos Humanos".
+SELECT empleados.nombre, empleados.apellido, empleados.edad
+FROM empleados
+WHERE empleados.edad < ANY (
+    SELECT e2.edad
+    FROM empleados e2
+    JOIN departamentos d ON e2.departamento_id = d.id
+    WHERE d.nombre = 'Recursos Humanos'
+);
+*/
+
+/*
+-- 4. Encuentra los productos cuyos precios sean menores o iguales a todos los precios de los productos con la palabra "Cámara" en su nombre.
+SELECT productos.nombre, productos.precio
+FROM productos
+WHERE productos.precio <= ALL (
+    SELECT p2.precio
+    FROM productos p2
+    WHERE p2.nombre LIKE '%Cámara%'
+);
+*/
+
+/*
+-- 5. Muestra el nombre y el salario de los empleados con salarios superiores al promedio de salarios de todos los empleados.
+SELECT empleados.nombre, empleados.salario
+FROM empleados
+WHERE empleados.salario > (
+    SELECT AVG(salario)
+    FROM empleados
+);
+*/
+
+/*
+-- 6. Encuentra el nombre y el salario de los empleados con salarios inferiores al promedio de salarios de todos los empleados del departamento de "Ventas".
+SELECT empleados.nombre, empleados.salario
+FROM empleados
+JOIN departamentos ON empleados.departamento_id = departamentos.id
+WHERE departamentos.nombre = 'Ventas' 
+AND empleados.salario < (
+    SELECT AVG(salario)
+    FROM empleados
+    JOIN departamentos ON empleados.departamento_id = departamentos.id
+    WHERE departamentos.nombre = 'Ventas'
+);
+*/
+
+/*
+-- 7. Encuentra los clientes que han realizado compras de productos con un precio_unitario inferior al precio promedio de todos los productos.
+SELECT DISTINCT clientes.nombre
+FROM clientes
+JOIN ventas ON clientes.id = ventas.cliente_id
+JOIN productos ON ventas.producto_id = productos.id
+WHERE productos.precio < (
+    SELECT AVG(precio)
+    FROM productos
+);
+*/
+
+/*
+-- 8. Encuentra los empleados que tienen un salario igual al salario de al menos un empleado del departamento de "Recursos Humanos".
+SELECT empleados.nombre, empleados.salario
+FROM empleados
+WHERE empleados.salario = ANY (
+    SELECT e2.salario
+    FROM empleados e2
+    JOIN departamentos d ON e2.departamento_id = d.id
+    WHERE d.nombre = 'Recursos Humanos' AND e2.nombre != 'Martín' 
+);
+*/
+
+/*
+-- 9. Encuentra los productos cuyo precio es mayor o igual a todos los precios de los productos con la palabra "Refrigeradora" en su nombre.
+SELECT productos.nombre, productos.precio
+FROM productos
+WHERE productos.precio >= ALL (
+    SELECT p2.precio
+    FROM productos p2
+    WHERE p2.nombre LIKE '%Refrigeradora%'
+);
+*/
+
+/*
+-- 10. Muestra el nombre, apellido y salario del empleado con el salario más alto que esté por debajo del promedio salarial de los empleados.
+SELECT empleados.nombre, empleados.apellido, empleados.salario 
+FROM empleados
+WHERE empleados.salario = (
+    SELECT MAX(salario)
+    FROM empleados
+    WHERE salario < (
+        SELECT AVG(salario)
+        FROM empleados
+    )
+);
+*/
+
+ 
