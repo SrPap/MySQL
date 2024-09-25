@@ -1,0 +1,321 @@
+Use mi_bd;
+/*
+ Crea una tabla llamada "envios" con cuatro columnas: "id" de tipo INT como clave primaria 
+y autoincremental, "fecha_envio" de tipo DATETIME,  "fecha_entrega" de tipo DATETIME y 
+"codigo_producto" de tipo VARCHAR(10). Luego, inserta siete filas en la tabla "envios" con los 
+siguientes datos:
+
+CREATE TABLE envios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fecha_envio DATETIME,
+    fecha_entrega DATETIME,
+    codigo_producto VARCHAR(10)
+);
+*/
+/*
+Fecha Envío: '2022-01-15 08:00:00', Fecha Entrega: '2022-01-20 12:30:00', Código Producto: 'ABC123'.
+Fecha Envío: '2022-02-10 10:15:00', Fecha Entrega: '2022-02-15 14:45:00', Código Producto: 'XYZ789'.
+Fecha Envío: '2022-03-05 09:30:00', Fecha Entrega: '2022-03-10 13:20:00', Código Producto: 'PQR456'.
+Fecha Envío: '2022-04-20 11:45:00', Fecha Entrega: '2022-04-25 15:10:00', Código Producto: 'LMN001'.
+Fecha Envío: '2022-05-12 07:55:00', Fecha Entrega: '2022-05-17 10:25:00', Código Producto: 'DEF777'.
+Fecha Envío: '2022-06-08 08:20:00', Fecha Entrega: '2022-06-13 12:40:00', Código Producto: 'GHI888'.
+Fecha Envío: '2022-07-03 10:05:00', Fecha Entrega: '2022-07-08 14:15:00', Código Producto: 'JKL999'.
+
+
+INSERT INTO envios (fecha_envio, fecha_entrega, codigo_producto)
+VALUES 
+('2022-01-15 08:00:00', '2022-01-20 12:30:00', 'ABC123'),
+('2022-02-10 10:15:00', '2022-02-15 14:45:00', 'XYZ789'),
+('2022-03-05 09:30:00', '2022-03-10 13:20:00', 'PQR456'),
+('2022-04-20 11:45:00', '2022-04-25 15:10:00', 'LMN001'),
+('2022-05-12 07:55:00', '2022-05-17 10:25:00', 'DEF777'),
+('2022-06-08 08:20:00', '2022-06-13 12:40:00', 'GHI888'),
+('2022-07-03 10:05:00', '2022-07-08 14:15:00', 'JKL999');
+*/
+
+/*
+--  Utilizando la función DATE_ADD, calcula la fecha de entrega programada para un envío con código de producto 'ABC123' 
+-- cuando se le añaden 5 días a la fecha de envío.
+SELECT codigo_producto, DATE_ADD(fecha_envio, INTERVAL 5 DAY) AS fecha_entrega_programada
+FROM envios
+WHERE codigo_producto = 'ABC123';
+
+--  Utilizando la función ADDTIME, encuentra la hora estimada de entrega para un envío con código de producto 'XYZ789'
+-- si se suma 4 horas y 30 minutos a la hora de entrega.
+SELECT codigo_producto, ADDTIME(fecha_entrega, '04:30:00') AS hora_estimada_entrega
+FROM envios
+WHERE codigo_producto = 'XYZ789';
+
+--  Utilizando la función CONVERT_TZ, convierte la fecha de envío de un envío con código de producto 'PQR456' de la zona horaria 'UTC' (+00:00)
+-- a la zona horaria de Argentina GMT-3 (-03:00).
+SELECT codigo_producto, CONVERT_TZ(fecha_envio, '+00:00', '-03:00') AS fecha_envio_argentina
+FROM envios
+WHERE codigo_producto = 'PQR456';
+
+--  Calcula la diferencia en días entre la fecha de entrega y la fecha de envío para el envío con código de producto 'LMN001'
+-- utilizando la función DATEDIFF.
+SELECT codigo_producto, DATEDIFF(fecha_entrega, fecha_envio) AS diferencia_dias
+FROM envios
+WHERE codigo_producto = 'LMN001';
+
+-- Utiliza la función CURDATE para obtener la fecha actual y, a continuación, obtener la diferencia en días entre la fecha de entrega 
+-- con código de producto 'DEF777' y la fecha actual.
+SELECT codigo_producto, DATEDIFF(CURDATE(), fecha_entrega) AS diferencia_dias
+FROM envios
+WHERE codigo_producto = 'DEF777';
+
+--  Utilizando la función CURTIME, obtén la hora actual del sistema.
+SELECT CURTIME() AS hora_actual;
+
+-- Utiliza la función DATE para extraer la fecha de envío del envío con ID 3.
+SELECT DATE(fecha_envio) AS fecha_envio
+FROM envios
+WHERE id = 3;
+
+-- Utiliza la función DATE_ADD para calcular la fecha de entrega programada para el envío con código de producto 'XYZ789'
+-- si se le agregan 3 días a la fecha de envío.
+SELECT codigo_producto, DATE_ADD(fecha_envio, INTERVAL 3 DAY) AS fecha_entrega_programada
+FROM envios
+WHERE codigo_producto = 'XYZ789';
+
+-- Utiliza la función DATE_FORMAT para mostrar la fecha de envío del envío con ID 6 en el formato 'DD-MM-YYYY'.
+SELECT DATE_FORMAT(fecha_envio, '%d-%m-%Y') AS fecha_envio_formateada
+FROM envios
+WHERE id = 6;
+
+-- Utiliza la función DATE_SUB para calcular la fecha de envío del envío con ID 4 si se le restan 2 días.
+SELECT DATE_SUB(fecha_envio, INTERVAL 2 DAY) AS nueva_fecha_envio
+FROM envios
+WHERE id = 4;
+
+-- Utiliza la función DATEDIFF para calcular la diferencia en días entre la fecha de envío y la fecha de entrega programada 
+-- para el envío con código de producto 'PQR456'.
+SELECT codigo_producto, DATEDIFF(fecha_entrega, fecha_envio) AS diferencia_dias
+FROM envios
+WHERE codigo_producto = 'PQR456';
+
+-- Utiliza la función DAY para obtener el día del mes en que se realizó el envío con ID 2.
+SELECT DAY(fecha_envio) AS dia_envio
+FROM envios
+WHERE id = 2;
+
+-- Utiliza la función DAYNAME para obtener el nombre del día de la semana en que se entregará el envío con código de producto 'DEF777'.
+SELECT codigo_producto, DAYNAME(fecha_entrega) AS dia_entrega
+FROM envios
+WHERE codigo_producto = 'DEF777';
+
+-- Utiliza la función DAYOFMONTH para obtener el día del mes en que se entregará el envío con código de producto 'GHI888'.
+SELECT codigo_producto, DAYOFMONTH(fecha_entrega) AS dia_entrega_mes
+FROM envios
+WHERE codigo_producto = 'GHI888';
+*/
+
+
+
+/*
+--                       Ejercicios funciones de  fecha y hora PART2
+-- Utiliza la función PERIOD_ADD para agregar un período de 3 meses al año-mes '2022-07'.
+SELECT  PERIOD_ADD('202207', 3) AS `PERIOD_ADD`;
+
+-- Utiliza la función PERIOD_DIFF para calcular el número de meses entre los períodos '2022-03' y '2022-12'.
+SELECT  PERIOD_DIFF('202203', '202212') AS `PERIOD_DIFF`;
+
+-- Utiliza la función QUARTER para obtener el trimestre de la fecha de entrega del envío con código de producto 'PQR456'.
+SELECT  QUARTER(fecha_entrega) AS `QUARTER`
+FROM envios
+WHERE codigo_producto = 'PQR456';
+
+-- Utiliza la función SEC_TO_TIME para convertir 3665 segundos en formato 'hh:mm:ss'.
+SELECT  SEC_TO_TIME(3665) AS `SEC_TO_TIME`;
+
+-- Utiliza la función SECOND para obtener los segundos de la hora de envío del envío con ID 2.
+SELECT  SECOND(fecha_envio) AS `SECOND`
+FROM envios
+WHERE id = 2;
+
+-- Utiliza la función STR_TO_DATE para convertir la cadena '2022()08()15' en una fecha.
+SELECT  STR_TO_DATE('2022()08()15','%Y()%m()%d') AS `STR_TO_DATE`;
+
+-- Utiliza la función SUBDATE (o DATE_SUB) para restar 5 días a la fecha de entrega del envío con código de producto 'GHI888'.
+SELECT  DATE_SUB(fecha_envio, INTERVAL 5 DAY) AS `DATE_SUB`
+FROM envios
+WHERE codigo_producto = 'GHI888';
+
+-- Utiliza la función SUBTIME para restar 2 horas y 15 minutos a la hora de envío del envío con ID 7.
+SELECT  SUBTIME(fecha_envio, '02:15:00') AS `SUBTIME`
+FROM envios
+WHERE id = 7;
+
+-- Utiliza la función TIME para extraer la porción de tiempo de la fecha de envío del envío con ID 1.
+SELECT  TIME(fecha_envio) AS `TIME`
+FROM envios
+WHERE id = 1;
+
+-- Utiliza la función TIME_FORMAT para formatear la hora de envío del envío con ID 2 en 'hh:mm:ss'.
+SELECT  TIME_FORMAT(fecha_envio, '%H-%i-%s') AS `TIME_FORMAT`
+FROM envios
+WHERE id = 2;
+
+-- Utiliza la función TIME_TO_SEC para convertir la hora de envío del envío con ID 3 en segundos.
+SELECT  TIME_TO_SEC(fecha_envio) AS `TIME_TO_SEC`
+FROM envios
+WHERE id = 3;
+
+-- Utiliza la función TIMEDIFF para calcular la diferencia de horas entre las fechas de envío y entrega del envío con ID 4.
+SELECT  TIMEDIFF(fecha_envio, fecha_entrega) AS `TIMEDIFF`
+FROM envios
+WHERE id = 4;
+
+-- Utiliza la función SYSDATE para obtener la hora exacta en la que se ejecuta la función en la consulta. 
+-- Para comprobar esto invoca SYSDATE, luego la función SLEEP durante 5 segundos y luego vuelve a invocar la función SYSDATE,
+--  y verifica la diferencia entre ambas invocaciones con TIMEDIFF.
+SELECT  SYSDATE() AS `SYSDATE1`, SLEEP(5) AS `SLEEP`, SYSDATE() AS `SYSDATE2`;
+
+-- Version alternativa
+-- Asignar la primera invocación de SYSDATE() a una variable
+SET @sysdate1 = SYSDATE();
+
+-- Pausar 5 segundos
+SELECT SLEEP(5);
+
+-- Asignar la segunda invocación de SYSDATE() a otra variable  
+SET @sysdate2 = SYSDATE();
+
+-- Calcular la diferencia entre ambas invocaciones
+SELECT TIMEDIFF(@sysdate2, @sysdate1) AS diferencia;
+
+
+-- Crea una consulta que utilice la función TIMESTAMP para obtener todos los valores de fecha_envio sumandole 12 horas.
+SELECT  TIMESTAMP(fecha_envio, '12:00:00') AS `TIMESTAMP`
+FROM envios;
+
+-- Utiliza la función TIMESTAMPADD para agregar 3 horas a la fecha de entrega del envío con código de producto 'XYZ789'.
+SELECT  TIMESTAMPADD(HOUR , 3, fecha_entrega) AS `TIMESTAMPADD`
+FROM envios
+WHERE codigo_producto = 'XYZ789';
+*/
+/*
+-- Ejercicios complementarios
+
+-- 1. Utiliza la función DAYOFWEEK para obtener el número del día de la semana en que se realizó el envío con ID 7.
+SELECT DAYOFWEEK(fecha_envio) AS dia_semana
+FROM envios
+WHERE id = 7;
+
+-- 2. Utiliza la función DAYOFYEAR para obtener el día del año en que se entregará el envío con código de producto 'JKL999'.
+SELECT DAYOFYEAR(fecha_entrega) AS dia_año
+FROM envios
+WHERE codigo_producto = 'JKL999';
+
+-- 3. Utiliza la función EXTRACT para obtener el año de la fecha de envío del envío con código de producto 'LMN001'.
+SELECT EXTRACT(YEAR FROM fecha_envio) AS año_envio
+FROM envios
+WHERE codigo_producto = 'LMN001';
+
+-- 4. Utiliza la función FROM_DAYS para obtener la fecha correspondiente a 737402 días a partir del año 0.
+SELECT FROM_DAYS(737402) AS fecha;
+
+-- 5. Utiliza la función FROM_UNIXTIME para saber qué fecha sería si pasaron 1,617,799,784 segundos desde 1970.
+SELECT FROM_UNIXTIME(1617799784) AS fecha_unix;
+
+-- 6. Utiliza la función GET_FORMAT para obtener el formato de fecha “EUR” para formatear la fecha de entrega del envío con código de producto 'XYZ789'.
+SELECT DATE_FORMAT(fecha_entrega, GET_FORMAT(DATE, 'EUR')) AS fecha_formato_eur
+FROM envios
+WHERE codigo_producto = 'XYZ789';
+
+-- 7. Utiliza la función HOUR para extraer la hora de la fecha de envío del envío con ID 1.
+SELECT HOUR(fecha_envio) AS hora_envio
+FROM envios
+WHERE id = 1;
+
+-- 8. Utiliza la función LAST_DAY para obtener el último día del mes de la fecha de entrega programada para el envío con código de producto 'XYZ789'.
+SELECT LAST_DAY(fecha_entrega) AS ultimo_dia_mes
+FROM envios
+WHERE codigo_producto = 'XYZ789';
+
+-- 9. Utiliza la función LOCALTIME para obtener la hora y la fecha local actual del servidor.
+SELECT LOCALTIME() AS hora_fecha_local;
+
+-- 10. Utiliza la función MAKEDATE para crear una fecha correspondiente al año 2023 y al día del año 180.
+SELECT MAKEDATE(2023, 180) AS fecha;
+
+-- 11. Utiliza la función MAKETIME para crear una hora con 3 horas, 30 minutos y 15 segundos.
+SELECT MAKETIME(3, 30, 15) AS hora_creada;
+
+-- 12. Utiliza la función MICROSECOND para obtener los microsegundos de la fecha de entrega del envío con ID 3.
+SELECT MICROSECOND(fecha_entrega) AS microsegundos
+FROM envios
+WHERE id = 3;
+
+-- 13. Utiliza la función MINUTE para obtener el minuto de la hora de envío del envío con ID 4.
+SELECT MINUTE(fecha_envio) AS minuto_envio
+FROM envios
+WHERE id = 4;
+
+-- 14. Utiliza la función MONTH para obtener el mes de la fecha de envío del envío con ID 5.
+SELECT MONTH(fecha_envio) AS mes_envio
+FROM envios
+WHERE id = 5;
+
+-- 15. Utiliza la función MONTHNAME para obtener el nombre del mes de la fecha de envío del envío con ID 6.
+SELECT MONTHNAME(fecha_envio) AS nombre_mes
+FROM envios
+WHERE id = 6;
+
+-- 16. Utiliza la función NOW para obtener la fecha y hora actual.
+SELECT NOW() AS fecha_hora_actual;
+
+-- 17. Utiliza la función TIMESTAMPDIFF para calcular la diferencia en días entre la fecha de envío del envío con ID 5 y la fecha de entrega del envío con ID 6.
+SELECT TIMESTAMPDIFF(DAY, 
+       (SELECT fecha_envio FROM envios WHERE id = 5), 
+       (SELECT fecha_entrega FROM envios WHERE id = 6)) AS diferencia_dias;
+
+-- 18. Utiliza la función TO_DAYS para convertir la fecha de envío del envío con ID 7 en días.
+SELECT TO_DAYS(fecha_envio) AS dias_envio
+FROM envios
+WHERE id = 7;
+
+-- 19. Utiliza la función TO_SECONDS para convertir la fecha de entrega del envío con código de producto 'JKL999' en segundos desde el Año 0.
+SELECT TO_SECONDS(fecha_entrega) AS segundos_entrega
+FROM envios
+WHERE codigo_producto = 'JKL999';
+
+-- 20. Utiliza la función UNIX_TIMESTAMP para obtener una marca de tiempo Unix de la fecha de envío del envío con ID 1.
+SELECT UNIX_TIMESTAMP(fecha_envio) AS timestamp_unix
+FROM envios
+WHERE id = 1;
+
+-- 21. Utiliza la función UTC_DATE para obtener la fecha UTC actual.
+SELECT UTC_DATE() AS fecha_utc;
+
+-- 22. Utiliza la función UTC_TIME para obtener la hora UTC actual.
+SELECT UTC_TIME() AS hora_utc;
+
+-- 23. Utiliza la función UTC_TIMESTAMP para obtener la fecha y hora UTC actual.
+SELECT UTC_TIMESTAMP() AS fecha_hora_utc;
+
+-- 24. Utiliza la función WEEK para obtener el número de semana de la fecha de envío del envío con ID 2.
+SELECT WEEK(fecha_envio) AS semana_envio
+FROM envios
+WHERE id = 2;
+
+-- 25. Utiliza la función WEEKDAY para obtener el índice del día de la semana de la fecha de envío del envío con ID 3.
+SELECT WEEKDAY(fecha_envio) AS indice_dia_semana
+FROM envios
+WHERE id = 3;
+
+-- 26. Utiliza la función WEEKOFYEAR para obtener la semana del calendario de la fecha de entrega del envío con ID 4.
+SELECT WEEKOFYEAR(fecha_entrega) AS semana_calendario
+FROM envios
+WHERE id = 4;
+
+-- 27. Utiliza la función YEAR para obtener el año de la fecha de envío del envío con ID 5.
+SELECT YEAR(fecha_envio) AS año_envio
+FROM envios
+WHERE id = 5;
+
+-- 28. Utiliza la función YEARWEEK para obtener el año y la semana de la fecha de envío del envío con ID 6.
+SELECT YEARWEEK(fecha_envio) AS año_semana_envio
+FROM envios
+WHERE id = 6;
+*/
