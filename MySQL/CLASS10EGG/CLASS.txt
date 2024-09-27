@@ -1,0 +1,134 @@
+
+/*
+
+-- Actividades: Consultas base de datos
+-- 1.Mostrar el nombre y peso de los diez jugadores que sean pivots (‘C’) y que pesen más de 200 libras,
+--  ordenados por peso.
+SELECT Nombre, Peso 
+FROM jugadores
+WHERE Posicion = 'C' AND Peso > 200
+ORDER BY Peso DESC LIMIT 10; 
+
+
+-- 2.Mostrar el nombre de los equipos del este (East).
+SELECT Nombre 
+FROM equipos
+WHERE Conferencia = 'East'; 
+
+-- 3.Mostrar los equipos donde su ciudad empieza con la letra ‘c’, ordenados por nombre.
+SELECT *
+FROM equipos
+WHERE Ciudad LIKE 'c%'
+ORDER BY Nombre ASC; 
+*/
+
+/*
+-- 4.Mostrar los puntos por partido del jugador ‘Pau Gasol’ en la temporada ’04/05′.
+SELECT estadisticas.Puntos_por_partido
+FROM estadisticas
+JOIN jugadores ON jugadores.codigo = estadisticas.jugador
+WHERE jugadores.Nombre = 'Pau Gasol' AND estadisticas.temporada = '04/05';
+*/
+/*
+-- 5.Mostrar los diez jugadores con más puntos en toda su carrera con un redondeo de dos decimales.
+SELECT estadisticas.jugador, jugadores.Nombre, ROUND(SUM(estadisticas.Puntos_por_partido),2)
+FROM partidos
+JOIN equipos ON equipos.Nombre = partidos.equipo_local OR equipos.Nombre = partidos.equipo_visitante
+JOIN jugadores ON jugadores.Nombre_equipo = equipos.Nombre
+JOIN estadisticas ON  jugadores.codigo = estadisticas.jugador
+GROUP BY jugadores.codigo
+ORDER BY ROUND(SUM(estadisticas.Puntos_por_partido),2) DESC
+LIMIT 10;
+*/
+/*
+-- 6.Mostrar el nombre del equipo, conferencia y división del jugador más alto de la NBA.
+SELECT jugadores.*, equipos.Nombre, equipos.Conferencia, equipos.Division
+FROM jugadores
+JOIN equipos ON equipos.Nombre = jugadores.Nombre_equipo
+ORDER BY Altura DESC
+LIMIT 1;
+*/
+
+/*
+-- 7 .Mostrar los 10 partidos (equipo_local, equipo_visitante y diferencia) con mayor diferencia de puntos.
+SELECT equipo_local,equipo_visitante, 
+ABS(puntos_local - puntos_visitante) AS diferencia
+FROM partidos
+ORDER BY diferencia DESC
+LIMIT 10;
+*/
+
+/*
+-- Muestra el nombre del equipo con la mayor diferencia de puntos totales de la temporada temporada "00/01".
+SELECT equipo, SUM(diferencia) AS diferencia_total
+FROM (
+    SELECT equipo_local AS equipo, ABS(puntos_local - puntos_visitante) AS diferencia
+    FROM partidos
+    WHERE temporada = '00/01'
+    UNION ALL
+    SELECT equipo_visitante AS equipo, ABS(puntos_visitante - puntos_local) AS diferencia
+    FROM partidos
+    WHERE temporada = '00/01'
+) AS diferencias
+GROUP BY equipo
+ORDER BY diferencia_total DESC
+LIMIT 1;
+*/
+/*
+-- Encuentra el nombre de los diez equipos que mejor porcentaje de victorias tengan en la temporada "98/99".
+--  El número de porcentaje debe estar escrito del 1 al 100 con hasta dos decimales y acompañado por el símbolo “%”.
+SELECT equipo_local AS equipo, 
+       CONCAT(ROUND((SUM(CASE WHEN puntos_local > puntos_visitante THEN 1 ELSE 0 END) / COUNT(*)) * 100, 2), '%') AS porcentaje_victorias
+FROM partidos
+WHERE temporada = '98/99'
+GROUP BY equipo_local
+UNION
+SELECT equipo_visitante AS equipo, 
+       CONCAT(ROUND((SUM(CASE WHEN puntos_visitante > puntos_local THEN 1 ELSE 0 END) / COUNT(*)) * 100, 2), '%') AS porcentaje_victorias
+FROM partidos
+WHERE temporada = '98/99'
+GROUP BY equipo_visitante
+ORDER BY porcentaje_victorias DESC
+LIMIT 10;
+*/
+
+/*
+-- Calcula el promedio de puntos por partido de los jugadores que son pivotes ('C') y tienen más de 7 pies de
+--  altura, y redondea el resultado a dos decimales.
+SELECT jugadores.Nombre `Jugador`, ROUND(AVG(estadisticas.Puntos_por_partido),2) `puntos_por_partido`
+FROM jugadores
+JOIN estadisticas ON  jugadores.codigo = estadisticas.jugador
+WHERE Posicion = 'C' AND Altura > '7-0'
+GROUP BY jugadores.codigo; 
+*/
+/*
+-- Muestra el nombre del jugador que ha registrado el mayor número de asistencias en un solo partido.
+SELECT jugadores.Nombre `Jugador`, estadisticas.Asistencias_por_partido `Asistencias_por_partido`
+FROM jugadores
+JOIN estadisticas ON  jugadores.codigo = estadisticas.jugador
+ORDER BY estadisticas.Asistencias_por_partido DESC
+LIMIT 1; 
+*/
+/*
+-- Encuentra el total de partidos en los que el equipo local anotó más de 100 puntos y el equipo visitante 
+-- anotó menos de 90 puntos.
+SELECT partidos.*
+FROM partidos
+WHERE partidos.puntos_local > 100 AND partidos.puntos_visitante < 90;
+*/
+/*
+-- Calcula la diferencia de puntos promedio en todos los partidos de la temporada “00/01” y redondea el 
+-- resultado a dos decimales.
+SELECT ROUND(AVG(ABS(puntos_local - puntos_visitante)), 2) AS diferencia_promedio
+FROM partidos
+WHERE temporada = '00/01';
+*/
+/*
+-- Encuentra el nombre del equipo que ha tenido al menos un jugador que ha promediado más de 10 rebotes por 
+-- partido en la temporada “97/98”.
+SELECT equipos.Nombre, jugadores.Nombre, estadisticas.Rebotes_por_partido
+FROM equipos
+JOIN jugadores ON jugadores.Nombre_equipo = equipos.Nombre
+JOIN estadisticas ON  jugadores.codigo = estadisticas.jugador
+WHERE estadisticas.Rebotes_por_partido > 10 AND temporada = '97/98';
+*/
