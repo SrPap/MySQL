@@ -1,0 +1,163 @@
+USE jardineria;
+/*
+--                             Ejercicios de Integración JARDINERÍA 
+-- Calcula la fecha del primer y último pago realizado por cada uno de los clientes. 
+-- El listado deberá mostrar el nombre y los apellidos de cada cliente.
+SELECT cliente.nombre_cliente 'empresa', 
+CONCAT(cliente.nombre_contacto,' ', cliente.apellido_contacto) 'nombre_contacto',
+MIN(pago.fecha_pago),
+MAX(pago.fecha_pago)
+FROM cliente
+JOIN pago ON pago.codigo_cliente = cliente.codigo_cliente
+GROUP BY cliente.codigo_cliente;
+*/
+/*
+-- Lista las ventas totales de los productos que hayan facturado más de 3000 euros. 
+-- Se mostrará el nombre, unidades vendidas, total facturado y total facturado con impuestos (21% IVA).
+SELECT producto.nombre `nombre_producto`, 
+SUM(detalle_pedido.cantidad) `cantidad`,
+SUM(detalle_pedido.cantidad * detalle_pedido.precio_unidad) `total_facturado`,
+SUM(detalle_pedido.cantidad * detalle_pedido.precio_unidad * 1.21) `total_facturado_IGV`
+FROM producto
+JOIN detalle_pedido ON producto.codigo_producto = detalle_pedido.codigo_producto
+GROUP BY producto.nombre
+HAVING SUM(detalle_pedido.cantidad * detalle_pedido.precio_unidad) > 3000;
+*/
+/*
+-- Los clientes cuyo límite de crédito sea mayor que los pagos que haya realizado. 
+-- (Sin utilizar INNER JOIN).
+SELECT nombre_contacto `cliente`, 
+limite_credito
+FROM cliente
+WHERE cliente.limite_credito > (
+SELECT SUM(total)
+FROM pago
+WHERE pago.codigo_cliente = cliente.codigo_cliente);
+*/
+/*
+-- Devuelve el nombre, los apellidos y el email de los empleados que están a cargo 
+-- de Alberto Soria.
+SELECT CONCAT(nombre, ' ', apellido1, ' ', apellido2) `empleado`, 
+email
+FROM empleado
+WHERE codigo_jefe = 3;
+*/
+/*
+-- Devuelve un listado que muestre solamente los clientes que sí han realizado ningún pago
+--  (Recomendamos resolver este ejercicio con Subconsultas del tipo IN y NOT IN).
+SELECT cliente.*
+FROM cliente
+WHERE cliente.codigo_cliente NOT IN ( 
+SELECT pago.codigo_cliente
+FROM pago);
+*/
+/*
+-- Devuelve un listado de los productos (código y nombre)  que han aparecido en un pedido alguna vez.
+-- (Recomendamos resolver este ejercicio con Subconsultas del tipo EXISTS y NOT EXISTS).
+SELECT producto.nombre `nombre_producto`, 
+ producto.codigo_producto `codigo_producto`
+FROM producto
+WHERE EXISTS (
+SELECT codigo_producto
+FROM Pago)
+GROUP BY codigo_producto
+ORDER BY codigo_producto DESC;
+*/
+/*
+-- Devuelve el nombre del producto que tenga el precio de venta más caro. (Recomendamos resolver este
+-- ejercicio con Subconsultas del tipo ALL y ANY).
+SELECT producto.nombre `nombre_producto`,
+precio_venta
+FROM producto
+WHERE precio_venta + 1 > ALL (
+SELECT precio_venta
+FROM producto);
+*/
+/*
+-- Devuelve el nombre del producto que tenga el precio de venta más caro (puedes realizarlo ordenando la tabla).
+SELECT producto.nombre `nombre_producto`,
+precio_venta
+FROM producto
+ORDER BY precio_venta DESC
+LIMIT 1;
+*/
+/*
+-- Calcula la suma de la cantidad total de todos los productos que aparecen en cada uno de los pedidos.
+SELECT producto.nombre `nombre_producto`, 
+SUM(detalle_pedido.cantidad) `cantidad`
+FROM producto
+JOIN detalle_pedido ON producto.codigo_producto = detalle_pedido.codigo_producto
+GROUP BY producto.nombre
+ORDER BY SUM(detalle_pedido.cantidad) DESC;
+*/
+/*
+-- Devuelve el nombre del cliente con mayor límite de crédito.
+SELECT nombre_cliente
+FROM cliente
+ORDER BY limite_credito DESC
+LIMIT 1;
+*/
+/*
+-- Devuelve el producto que más unidades tiene en stock.
+SELECT nombre
+FROM producto
+ORDER BY cantidad_en_stock DESC
+LIMIT 1;
+*/
+/*
+-- Devuelve un listado que muestre solamente los clientes que no han realizado ningún pago. 
+-- (Recomendamos resolver este ejercicio con Subconsultas del tipo ALL y ANY).
+SELECT *
+FROM cliente
+WHERE codigo_cliente NOT IN (
+    SELECT codigo_cliente
+    FROM pedido
+);
+*/
+/*
+-- Devuelve un listado de los productos que nunca han aparecido en un pedido. (Recomendamos resolver 
+--  ejercicio con Subconsultas del tipo EXISTS y NOT EXISTS).
+SELECT *
+FROM producto
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM detalle_pedido 
+    WHERE detalle_pedido.codigo_producto = producto.codigo_producto
+);
+*/
+/*
+-- Calcula el número de productos diferentes que hay en cada uno de los pedidos. 
+SELECT codigo_pedido, COUNT(DISTINCT codigo_producto) AS num_productos
+FROM detalle_pedido
+GROUP BY codigo_pedido;
+*/
+/*
+-- Devuelve el nombre de los representantes de ventas y el número de clientes al que atiende cada uno.
+SELECT empleado.nombre AS representante_ventas, COUNT(cliente.codigo_cliente) AS num_clientes
+FROM empleado 
+LEFT JOIN cliente ON empleado.codigo_empleado = cliente.codigo_empleado_rep_ventas
+GROUP BY empleado.codigo_empleado;
+*/
+/*
+-- Calcula cuántos clientes tiene cada una de las ciudades que empiezan por M.
+SELECT ciudad, COUNT(*) AS num_clientes
+FROM cliente
+WHERE ciudad LIKE 'M%'
+GROUP BY ciudad;
+*/
+/*
+-- Calcula el número de clientes que no tiene asignado representante de ventas.
+SELECT COUNT(*) AS num_clientes_sin_representante
+FROM cliente
+WHERE codigo_empleado_rep_ventas IS NULL;
+*/
+/*
+-- Devuelve un listado de los 20 productos más vendidos y el número total de unidades que se han vendido de cada uno.
+--  El listado deberá estar ordenado por el número total de unidades vendidas descendente.
+SELECT producto.codigo_producto, producto.nombre, SUM(detalle_pedido.cantidad) AS total_unidades_vendidas
+FROM producto 
+JOIN detalle_pedido ON producto.codigo_producto = detalle_pedido.codigo_producto
+GROUP BY producto.codigo_producto
+ORDER BY total_unidades_vendidas DESC
+LIMIT 20;
+*/
